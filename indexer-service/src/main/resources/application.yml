@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: indexer-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/docmind
+    username: docmind
+    password: docmind
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: indexer-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+server:
+  port: 8082
