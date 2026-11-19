@@ -41,4 +41,9 @@ public class Document {
     public Instant getCreatedAt() {
         return createdAt;
     }
+
+    public void update(String title, String body) {
+        this.title = title;
+        this.body = body;
+    }
 }

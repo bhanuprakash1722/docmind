@@ -9,7 +9,7 @@ Two Spring Boot services:
 
 ## Status
 
-Day 1: project scaffold only. Document storage works; search and embedding inference land over the next weeks per ROADMAP.md. The examples below describe the target API.
+Day 2: document CRUD is implemented and unit-tested - create, list, get, update and delete via `/api/documents`, with 404s on unknown ids. Chunking, embedding inference and search land over the next weeks per ROADMAP.md. The document endpoints below work as shown; `/api/search` still describes the target API.
 
 ## Stack
 
