@@ -9,7 +9,7 @@ Two Spring Boot services:
 
 ## Status
 
-Day 2: document CRUD is implemented and unit-tested - create, list, get, update and delete via `/api/documents`, with 404s on unknown ids. Chunking, embedding inference and search land over the next weeks per ROADMAP.md. The document endpoints below work as shown; `/api/search` still describes the target API.
+Day 3: document CRUD (create, list, get, update and delete via `/api/documents`) plus a sentence-aware text chunker (~500 char windows, one-sentence overlap, whitespace-safe hard splits), all unit-tested. Embedding inference and search land over the next weeks per ROADMAP.md. The document endpoints below work as shown; `/api/search` still describes the target API.
 
 ## Stack
 
