@@ -1,5 +1,6 @@
 package com.docmind.api;
 
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
@@ -24,7 +25,7 @@ public class DocumentController {
     }
 
     @PostMapping
-    public ResponseEntity<DocumentResponse> create(@RequestBody DocumentRequest request) {
+    public ResponseEntity<DocumentResponse> create(@Valid @RequestBody DocumentRequest request) {
         DocumentResponse created = service.create(request);
         return ResponseEntity.created(URI.create("/api/documents/" + created.id())).body(created);
     }
@@ -40,7 +41,7 @@ public class DocumentController {
     }
 
     @PutMapping("/{id}")
-    public DocumentResponse update(@PathVariable UUID id, @RequestBody DocumentRequest request) {
+    public DocumentResponse update(@PathVariable UUID id, @Valid @RequestBody DocumentRequest request) {
         return service.update(id, request);
     }
 

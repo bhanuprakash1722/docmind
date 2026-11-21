@@ -12,41 +12,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-@ExtendWith(MockitoExtension.class)
+@WebMvcTest(DocumentController.class)
 class DocumentControllerTest {
 
     private static final Instant FIXED_TIME = Instant.parse("2026-11-19T00:00:00Z");
 
-    @Mock
-    private DocumentService service;
-
+    @Autowired
     private MockMvc mockMvc;
 
-    @BeforeEach
-    void setUp() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        mockMvc = MockMvcBuilders.standaloneSetup(new DocumentController(service))
-                .setMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper))
-                .build();
-    }
+    @MockBean
+    private DocumentService service;
 
     @Test
     void createReturns201WithLocation() throws Exception {
@@ -86,15 +71,6 @@ class DocumentControllerTest {
     }
 
     @Test
-    void getReturns404WhenMissing() throws Exception {
-        UUID id = UUID.randomUUID();
-        when(service.get(id)).thenThrow(new DocumentNotFoundException(id));
-
-        mockMvc.perform(get("/api/documents/{id}", id))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
     void updateReturnsUpdatedDocument() throws Exception {
         UUID id = UUID.randomUUID();
         when(service.update(eq(id), any(DocumentRequest.class)))
@@ -116,5 +92,57 @@ class DocumentControllerTest {
                 .andExpect(status().isNoContent());
 
         verify(service).delete(id);
+    }
+
+    @Test
+    void missingDocumentReturns404WithErrorBody() throws Exception {
+        UUID id = UUID.randomUUID();
+        when(service.get(id)).thenThrow(new DocumentNotFoundException(id));
+
+        mockMvc.perform(get("/api/documents/{id}", id))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("document_not_found"))
+                .andExpect(jsonPath("$.message").value("Document not found: " + id));
+    }
+
+    @Test
+    void createRejectsBlankTitle() throws Exception {
+        mockMvc.perform(post("/api/documents")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\":\"  \",\"body\":\"body\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("validation_failed"))
+                .andExpect(jsonPath("$.fieldErrors.title").exists());
+    }
+
+    @Test
+    void createRejectsMissingBody() throws Exception {
+        mockMvc.perform(post("/api/documents")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\":\"title\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("validation_failed"))
+                .andExpect(jsonPath("$.fieldErrors.body").exists());
+    }
+
+    @Test
+    void createRejectsOversizedTitle() throws Exception {
+        String oversized = "x".repeat(201);
+
+        mockMvc.perform(post("/api/documents")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\":\"" + oversized + "\",\"body\":\"body\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.fieldErrors.title").exists());
+    }
+
+    @Test
+    void updateRejectsBlankBody() throws Exception {
+        mockMvc.perform(put("/api/documents/{id}", UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\":\"title\",\"body\":\"\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("validation_failed"))
+                .andExpect(jsonPath("$.fieldErrors.body").exists());
     }
 }

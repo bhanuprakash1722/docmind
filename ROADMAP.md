@@ -6,7 +6,7 @@ One meaningful step per day.
 1. [done, Day 1] Repo scaffold: README, compose, CI, aggregator pom, service skeletons
 2. [done, Day 2] Document entity + repository + CRUD endpoints
 3. [done, Day 3] Text chunker (sentence-aware, ~500 char windows, overlap) + unit tests
-4. Validation + error handling + controller slice tests
+4. [done, Day 4] Validation + error handling + controller slice tests
 5. pgvector schema (chunks table) + JdbcTemplate chunk store
 6. Dockerfiles for both services
 
