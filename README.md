@@ -9,7 +9,7 @@ Two Spring Boot services:
 
 ## Status
 
-Day 4: document CRUD (create, list, get, update and delete via `/api/documents`) with bean validation (blank/oversized title and body rejected with a uniform 400 error body) and consistent 404 errors, plus a sentence-aware text chunker (~500 char windows, one-sentence overlap), all unit- and slice-tested. Embedding inference and search land over the next weeks per ROADMAP.md. The document endpoints below work as shown; `/api/search` still describes the target API.
+Day 5: document CRUD with validation and uniform API errors, a sentence-aware text chunker, and the indexer-side pgvector schema (chunks table, 384-dim embeddings) with an idempotent JdbcTemplate chunk store - all unit- and slice-tested. Embedding inference and search land over the next weeks per ROADMAP.md. The document endpoints below work as shown; `/api/search` still describes the target API.
 
 ## Stack
 

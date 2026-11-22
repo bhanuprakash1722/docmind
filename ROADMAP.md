@@ -7,7 +7,7 @@ One meaningful step per day.
 2. [done, Day 2] Document entity + repository + CRUD endpoints
 3. [done, Day 3] Text chunker (sentence-aware, ~500 char windows, overlap) + unit tests
 4. [done, Day 4] Validation + error handling + controller slice tests
-5. pgvector schema (chunks table) + JdbcTemplate chunk store
+5. [done, Day 5] pgvector schema (chunks table) + JdbcTemplate chunk store
 6. Dockerfiles for both services
 
 ## Week 2 - embeddings + pipeline
