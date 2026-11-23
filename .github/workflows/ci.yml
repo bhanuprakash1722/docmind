@@ -12,3 +12,7 @@ jobs:
           cache: maven
       - name: Build and test
         run: mvn -B verify
+      - name: Build Docker images
+        run: |
+          docker build -f api-service/Dockerfile -t docmind-api:ci .
+          docker build -f indexer-service/Dockerfile -t docmind-indexer:ci .

@@ -9,7 +9,7 @@ Two Spring Boot services:
 
 ## Status
 
-Day 5: document CRUD with validation and uniform API errors, a sentence-aware text chunker, and the indexer-side pgvector schema (chunks table, 384-dim embeddings) with an idempotent JdbcTemplate chunk store - all unit- and slice-tested. Embedding inference and search land over the next weeks per ROADMAP.md. The document endpoints below work as shown; `/api/search` still describes the target API.
+Day 6: document CRUD with validation and uniform API errors, a sentence-aware text chunker, the pgvector chunks schema with an idempotent chunk store, and Docker images for both services (built in CI on every push; the compose stack itself is exercised from Day 12 per ROADMAP.md). Embedding inference and search land next. The document endpoints below work as shown; `/api/search` still describes the target API.
 
 ## Stack
 
@@ -22,9 +22,15 @@ Embeddings are computed in-process. No API keys, no usage cost, and the model ca
 ## Run locally
 
 ```bash
-docker compose up -d            # postgres+pgvector and kafka
-./mvnw -pl indexer-service spring-boot:run
-./mvnw -pl api-service spring-boot:run
+docker compose up -d postgres kafka   # infrastructure only
+mvn -pl indexer-service spring-boot:run
+mvn -pl api-service spring-boot:run
+```
+
+Or run the whole stack as containers:
+
+```bash
+docker compose up --build             # postgres, kafka, api-service (8081), indexer-service (8082)
 ```
 
 ## Try it
