@@ -9,7 +9,7 @@ Two Spring Boot services:
 
 ## Status
 
-Day 6: document CRUD with validation and uniform API errors, a sentence-aware text chunker, the pgvector chunks schema with an idempotent chunk store, and Docker images for both services (built in CI on every push; the compose stack itself is exercised from Day 12 per ROADMAP.md). Embedding inference and search land next. The document endpoints below work as shown; `/api/search` still describes the target API.
+Day 7: document CRUD with validation and uniform API errors, a sentence-aware text chunker, the pgvector chunks schema with an idempotent chunk store, Docker images built in CI, and the embedding abstraction - an `Embedder` interface plus a deterministic hashing implementation (unit-length, reproducible) that stands in for tests and local development until the DJL/ONNX model lands on Day 8. The document endpoints below work as shown; `/api/search` still describes the target API.
 
 ## Stack
 

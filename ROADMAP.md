@@ -11,7 +11,7 @@ One meaningful step per day.
 6. [done, Day 6] Dockerfiles for both services
 
 ## Week 2 - embeddings + pipeline
-7. Embedder interface + deterministic fake for tests
+7. [done, Day 7] Embedder interface + deterministic fake for tests
 8. DJL local embedder (all-MiniLM-L6-v2 ONNX, mean pooling, L2 normalize)
 9. Kafka topic config + DocumentCreated event + producer in api-service
 10. indexer-service consumer: embed chunks, store vectors (idempotent on chunkId)
