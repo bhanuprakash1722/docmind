@@ -9,7 +9,7 @@ Two Spring Boot services:
 
 ## Status
 
-Day 7: document CRUD with validation and uniform API errors, a sentence-aware text chunker, the pgvector chunks schema with an idempotent chunk store, Docker images built in CI, and the embedding abstraction - an `Embedder` interface plus a deterministic hashing implementation (unit-length, reproducible) that stands in for tests and local development until the DJL/ONNX model lands on Day 8. The document endpoints below work as shown; `/api/search` still describes the target API.
+Day 8: document CRUD with validation and uniform API errors, a sentence-aware text chunker, the pgvector chunks schema with an idempotent chunk store, Docker images built in CI, and the `Embedder` abstraction with two implementations: a deterministic hashing embedder for tests and local development, and `DjlEmbedder`, a real local model - sentence-transformers/all-MiniLM-L6-v2 running in-process on ONNX Runtime via DJL (mean pooling, L2-normalized, 384 dimensions). The model is verified by an opt-in integration test (`mvn -pl indexer-service -Dtest=DjlEmbedderIT test`) that loads it and confirms semantically related texts score closer than unrelated ones; it downloads ~90 MB on first run and caches under `~/.djl.ai`. The document endpoints below work as shown; `/api/search` still describes the target API.
 
 ## Stack
 
