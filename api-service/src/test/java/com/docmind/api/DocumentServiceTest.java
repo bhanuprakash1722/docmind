@@ -23,6 +23,9 @@ class DocumentServiceTest {
     @Mock
     private DocumentRepository repository;
 
+    @Mock
+    private DocumentEventProducer eventProducer;
+
     @InjectMocks
     private DocumentService service;
 
@@ -37,6 +40,17 @@ class DocumentServiceTest {
         assertEquals("producers write records", response.body());
         assertNotNull(response.createdAt());
         verify(repository).save(any(Document.class));
+        verify(eventProducer).publishDocumentCreated(any(Document.class));
+    }
+
+    @Test
+    void createPublishesEventWithSavedDocument() {
+        when(repository.save(any(Document.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        service.create(new DocumentRequest("t", "b"));
+
+        verify(eventProducer).publishDocumentCreated(org.mockito.ArgumentMatchers.argThat(
+                document -> "t".equals(document.getTitle()) && "b".equals(document.getBody())));
     }
 
     @Test

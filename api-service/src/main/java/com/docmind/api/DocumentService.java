@@ -9,13 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class DocumentService {
 
     private final DocumentRepository repository;
+    private final DocumentEventProducer eventProducer;
 
-    public DocumentService(DocumentRepository repository) {
+    public DocumentService(DocumentRepository repository, DocumentEventProducer eventProducer) {
         this.repository = repository;
+        this.eventProducer = eventProducer;
     }
 
     public DocumentResponse create(DocumentRequest request) {
         Document document = repository.save(new Document(request.title(), request.body()));
+        eventProducer.publishDocumentCreated(document);
         return DocumentResponse.from(document);
     }
 
