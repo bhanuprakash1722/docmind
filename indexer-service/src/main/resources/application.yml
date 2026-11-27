@@ -11,6 +11,14 @@ spring:
       group-id: indexer-service
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.value.default.type: com.docmind.indexer.DocumentCreatedEvent
+        spring.json.use.type.headers: false
+        spring.json.trusted.packages: com.docmind.indexer
 server:
   port: 8082
+docmind:
+  embedder: djl
+  topics:
+    document-created: docmind.document-created
