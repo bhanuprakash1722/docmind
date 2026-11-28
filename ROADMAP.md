@@ -15,7 +15,7 @@ One meaningful step per day.
 8. [done, Day 8] DJL local embedder (all-MiniLM-L6-v2 ONNX, mean pooling, L2 normalize)
 9. [done, Day 9] Kafka topic config + DocumentCreated event + producer in api-service
 10. [done, Day 10] indexer-service consumer: embed chunks, store vectors (idempotent on chunkId)
-11. Integration test with EmbeddedKafka + fake embedder
+11. [done, Day 11] Integration test with EmbeddedKafka + fake embedder
 12. First end-to-end local run documented
 
 ## Week 3 - search + hardening
